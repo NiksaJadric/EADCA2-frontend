@@ -27,3 +27,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PAT }}
+
+      - name: Build, Tag and Push image to DockerHub
+        id: build-image
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t njadric/eadca2_frontend:$IMAGE_TAG .
+          docker push njadric/eadca2_frontend:$IMAGE_TAG
+          echo "::set-output name=image::njadric/eadca2_frontend:$IMAGE_TAG"
+
+#      - name: Other step that needs to create image
+#        run: |
+#          ${{ steps.build-image.outputs.image }}
