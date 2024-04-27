@@ -40,3 +40,13 @@ jobs:
 #      - name: Other step that needs to create image
 #        run: |
 #          ${{ steps.build-image.outputs.image }}
+
+      - name: Install Kubectl
+        uses: azure/setup-kubectl@v1
+
+      - name: Update Kubectl Context
+        run: aws eks update-kubeconfig --name eadca2-eks-SYyKX --region eu-west-1
+
+      - name: Deploy Image to Amazon EKS
+        run: |
+          kubectl set image deployment/store store=${{ steps.build-image.outputs.image }}
